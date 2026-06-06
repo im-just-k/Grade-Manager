@@ -1,73 +1,74 @@
-// Importing all necessary libraries for GUI components and event handling first.
 import java.awt.*;
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import javax.swing.*;
 
 // Defining the main class for the Grade Manager GUI application.
 public class GradeManagerGUI extends JFrame {
 
-    private JTextField[] markFields = new JTextField[10]; // Array to hold text fields for user input for marks (up to 10 courses)
-    private JLabel resultLabel; // Label to display calculated letter grade (only overall average)
-    private JButton calculateButton, clearButton; // Buttons for calculating average grades and clearing inputs
-
-    public GradeManagerGUI() {
-        setTitle("Grade Manager"); // Setting title of app window
-        setSize(400, 400); // Setting size of app window
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensuring application exits when window is closed
-        setLayout(new GridLayout(13, 1)); // Setting layout for the frame (13 rows, 2 columns)
-        setLocationRelativeTo(null); // Centering the window on the screen
+    private JTextField[] markFields = new JTextField[10]; // Array to hold text fields for up to 10 course marks
+    private JLabel resultLabel; // Label to display calculated average inside the white box
+    private JButton calculateButton, clearButton; // Control buttons
     
-        // Main panel using GridBagLayout for perfectly aligned rows
+    // Instance of our modular backend controller
+    private final GradeCalculator calculator = new GradeCalculator();
+
+    // Constructor to set up the GUI components and layout
+    public GradeManagerGUI() {
+        setTitle("Grade Manager"); 
+        setSize(400, 550); 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
+        setLocationRelativeTo(null); // Centers the window on the screen
+    
+        // Main panel with GridBagLayout for clean row-by-row alignment
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(6, 10, 6, 10);
+        gbc.insets = new Insets(6, 10, 6, 10); // Margins around elements
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Title Header
+        // Header Title Label
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.gridwidth = 2;
+        gbc.gridwidth = 2; // Span across both columns
         JLabel headerLabel = new JLabel("Enter Course Marks (up to 10)");
         headerLabel.setFont(new Font("Arial", Font.BOLD, 14));
         panel.add(headerLabel, gbc);
-        
-        gbc.gridwidth = 1; // Reset gridwidth for the input rows
 
-        // Loop to dynamically create 10 rows matching the mockup
+        gbc.gridwidth = 1; // Reset grid width for individual input rows
+
+        // Loop to dynamically create labels and text fields for up to 10 courses
         for (int i = 0; i < 10; i++) {
             gbc.gridx = 0; // Column 0 for labels
-            gbc.gridy = i + 1; // Rows 1 to 10 for mark inputs
-            panel.add(new JLabel("Mark " + (i + 1) + ": "), gbc); // Adding label for each mark input
+            gbc.gridy = i + 1; // Rows 1 through 10
+            panel.add(new JLabel("Mark " + (i + 1) + ": "), gbc);
 
             gbc.gridx = 1; // Column 1 for text fields
-            markFields[i] = new JTextField(10);
-            panel.add(markFields[i], gbc); // Fixed: added 'gbc' here
+            markFields[i] = new JTextField(10); 
+            panel.add(markFields[i], gbc); // Passes 'gbc' to maintain the structural grid alignment
         }
 
-        // Horizontal Separator
+        // Horizontal Separator line matching the mock-up
         gbc.gridx = 0;
         gbc.gridy = 11;
         gbc.gridwidth = 2;
         panel.add(new JSeparator(JSeparator.HORIZONTAL), gbc);
-        gbc.gridwidth = 1; // Reset gridwidth for the result label
+        gbc.gridwidth = 1; // Reset
 
-        // Adding Calculate button with action listener
-        calculateButton = new JButton("Calculate Average Grade");
-        calculateButton.addActionListener(e -> calculateAverageGrade()); // Action to perform when Calculate button is clicked
-        gbc.gridx = 0; // Column 0 for Calculate button
-        gbc.gridy = 13; // Row 13 for Calculate button
+        // Adding Calculate button
+        calculateButton = new JButton("Calculate");
+        calculateButton.addActionListener(e -> calculateAverageGrade()); 
+        gbc.gridx = 0; 
+        gbc.gridy = 12; 
         panel.add(calculateButton, gbc);
 
-        // Adding Clear button with action listener
-        clearButton = new JButton("Clear:)");
-        clearButton.addActionListener(e -> clearFields()); // Action to perform when Clear button is clicked
-        gbc.gridx = 1; // Column 1 for Clear button
-        gbc.gridy = 13; // Row 13 for Clear button
+        // Adding Clear button
+        clearButton = new JButton("Clear");
+        clearButton.addActionListener(e -> clearFields()); 
+        gbc.gridx = 1; 
+        gbc.gridy = 12; 
         panel.add(clearButton, gbc);
 
-        // Result display panel (White box from mock-up)
+        // Result Box Panel (Matches the white container block from the mockup)
         gbc.gridx = 0;
         gbc.gridy = 13;
         gbc.gridwidth = 2;
@@ -77,12 +78,18 @@ public class GradeManagerGUI extends JFrame {
         
         resultLabel = new JLabel("<html>Overall Average:<br>—</html>");
         resultLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        resultLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        resultLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Inner container padding
         resultBox.add(resultLabel, BorderLayout.CENTER);
         panel.add(resultBox, gbc);
 
-        // Crucial Fix: Add the main panel to the frame window
+        // Status bar panel along the baseline frame
+        JPanel statusBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        statusBar.setBorder(BorderFactory.createEtchedBorder());
+        statusBar.add(new JLabel("Ready"));
+
+        // Assembling the main component wrappers into the layout frame
         add(panel, BorderLayout.CENTER);
+        add(statusBar, BorderLayout.SOUTH);
     }
 
     // Handles user interaction, hands data to the backend, catches processing errors
@@ -110,5 +117,20 @@ public class GradeManagerGUI extends JFrame {
         } catch (IllegalArgumentException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Range Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+
+    // Clear Logic: Wipes text boxes and resets the white feedback panel text
+    private void clearFields() {
+        for (JTextField field : markFields) {
+            field.setText("");
+        }
+        resultLabel.setText("<html>Overall Average:<br>—</html>");
+    }
+
+    // Driver method execution launch point
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new GradeManagerGUI().setVisible(true); 
+        });
     }
 }
