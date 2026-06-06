@@ -1,6 +1,8 @@
 // Importing all necessary libraries for GUI components and event handling first.
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 // Defining the main class for the Grade Manager GUI application.
@@ -32,5 +34,12 @@ public class GradeManagerGUI extends JFrame {
             markFields[i] = new JTextField(); // Initializing text field for course mark input
             panel.add(markFields[i]); // Adding text field to panel
         }
+
+        // Adding Calculate and Clear buttons with action listeners
+        calculateButton = new JButton("Calculate Average Grade");
+        calculateButton.addActionListener(e -> calculateAverageGrade()); // Action to perform when Calculate button is clicked
+        gbc.gridx = 0; // Column 0 for Calculate button
+        gbc.gridy = 13; // Row 13 for Calculate button
+        panel.add(calculateButton, gbc);
     }
 }
