@@ -14,7 +14,7 @@ public class GradeManagerGUI extends JFrame {
         setTitle("Grade Manager"); // Setting title of app window
         setSize(400, 400); // Setting size of app window
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Ensuring application exits when window is closed
-        setLayout(new GridLayout(13, 2)); // Setting layout for the frame (13 rows, 2 columns)
+        setLayout(new GridLayout(13, 1)); // Setting layout for the frame (13 rows, 2 columns)
     
         // Main panel with GridBagLayout for clean row-by-row alignment
         JPanel panel = new JPanel(new GridBagLayout());
@@ -27,7 +27,10 @@ public class GradeManagerGUI extends JFrame {
             gbc.gridx = 0; // Column 0 for labels
             gbc.gridy = i; // Row i for each course
             panel.add(new Label("Course " + (i + 1) + " Mark: ")); // Label for each course mark input
+
+            gbc.gridx = 1; // Column 1 for text fields
+            markFields[i] = new JTextField(); // Initializing text field for course mark input
+            panel.add(markFields[i]); // Adding text field to panel
         }
-    
     }
 }
