@@ -35,11 +35,18 @@ public class GradeManagerGUI extends JFrame {
             panel.add(markFields[i]); // Adding text field to panel
         }
 
-        // Adding Calculate and Clear buttons with action listeners
+        // Adding Calculate button with action listener
         calculateButton = new JButton("Calculate Average Grade");
         calculateButton.addActionListener(e -> calculateAverageGrade()); // Action to perform when Calculate button is clicked
         gbc.gridx = 0; // Column 0 for Calculate button
         gbc.gridy = 13; // Row 13 for Calculate button
         panel.add(calculateButton, gbc);
+
+        // Adding Clear button with action listener
+        clearButton = new JButton("Clear:)");
+        clearButton.addActionListener(e -> clearFields()); // Action to perform when Clear button is clicked
+        gbc.gridx = 1; // Column 1 for Clear button
+        gbc.gridy = 13; // Row 13 for Clear button
+        panel.add(clearButton, gbc);
     }
 }
