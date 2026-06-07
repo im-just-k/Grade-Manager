@@ -30,4 +30,16 @@ public class GradeCalculator {
         System.arraycopy(temporaryArray, 0, filledMarks, 0, validCount);
         return filledMarks;
     }
+
+    public double calculateAverage(double[] marks) {
+        if (marks.length == 0) {
+            return 0.0;
+        }
+        
+        double sum = 0;
+        for (double mark : marks) {
+            sum += mark;
+        }
+        return sum / marks.length;
+    }
 }
