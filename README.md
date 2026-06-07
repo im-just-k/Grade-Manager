@@ -1,5 +1,5 @@
 # Grade Manager
-A Mac-native desktop application that allows users to input marks for up to 10 courses and calculate their average.
+A desktop application that allows users to input marks for up to 10 courses and calculate their average.
 
 ---
 
