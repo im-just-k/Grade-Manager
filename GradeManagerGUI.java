@@ -14,7 +14,7 @@ public class GradeManagerGUI extends JFrame {
     // Constructor to set up the GUI components and layout
     public GradeManagerGUI() {
         setTitle("Grade Manager");
-        setSize(400, 550);
+        setSize(500, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null); // Centers the window on the screen
     
