@@ -6,9 +6,9 @@ A desktop application that allows users to input marks for up to 10 courses and 
 ## Features
 * **Interactive Minimal GUI:** Easy-to-use desktop window for adding and managing grades, created using Java Swing
 
-* **Instant Calculations:** Separated backend logic (`GradeCalculator`) that computes averages automatically.
+* **Instant Calculations:** Separated backend logic (`GradeCalculator`) that computes averages automatically
 
-* **Fully Standalone:** Packaged into a native desktop app with a custom icon—no Java installation required to run the final bundle!
+* **Fully Standalone:** Packaged into a native desktop app with a custom icon
 
 ## How to Install and Run
 
